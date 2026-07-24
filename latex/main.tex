@@ -72,4 +72,40 @@ para todo $n$, ou seja, o sinal se torna constante (período trivial $N=1$).
     \includegraphics[width=0.7\textwidth]{images/grafico_1b_x5.png}
 \end{figure}
 
+\section*{Questão 2}
+
+Foi implementada, em Python, a função \texttt{Deslocamento\_Tempo(x, n, n0)}, que
+recebe o sinal $x$, seu vetor de índices $n$ e o escalar de deslocamento $n_0$, e
+retorna o vetor $y$ tal que
+\[
+y[n] = x[n - n_0].
+\]
+
+Como o deslocamento no tempo apenas translada o sinal ao longo do eixo $n$, sem
+alterar seus valores, a função retorna as mesmas amostras de $x$; o que muda é o
+eixo de índices ao qual essas amostras passam a corresponder: se $x$ está definido
+sobre o vetor $n$, então $y[n] = x[n-n_0]$ está definido sobre o vetor deslocado
+$n_y = n + n_0$. Dessa forma, a implementação é válida para qualquer vetor $x$,
+vetor de índices $n$ e escalar $n_0$ (positivo, negativo ou nulo):
+
+\begin{verbatim}
+def Deslocamento_Tempo(x, n, n0):
+    x = np.asarray(x)
+    y = x.copy()
+    return y
+\end{verbatim}
+
+\subsection*{Exemplo}
+
+Como exemplo, considerou-se $x[n]$ um pulso triangular definido para
+$n \in [-3, 5]$, com deslocamento $n_0 = 3$ (atraso de 3 amostras). Como
+$y[n] = x[n - n_0]$, o eixo de índices correspondente a $y$ é $n_y = n + n_0$.
+O gráfico abaixo mostra $x[n]$ e $y[n]$ no mesmo eixo, com legenda identificando
+cada sinal.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/grafico_2_deslocamento.png}
+\end{figure}
+
 \end{document}
