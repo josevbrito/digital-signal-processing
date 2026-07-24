@@ -81,31 +81,40 @@ retorna o vetor $y$ tal que
 y[n] = x[n - n_0].
 \]
 
-Como o deslocamento no tempo apenas translada o sinal ao longo do eixo $n$, sem
-alterar seus valores, a função retorna as mesmas amostras de $x$; o que muda é o
-eixo de índices ao qual essas amostras passam a corresponder: se $x$ está definido
-sobre o vetor $n$, então $y[n] = x[n-n_0]$ está definido sobre o vetor deslocado
-$n_y = n + n_0$. Dessa forma, a implementação é válida para qualquer vetor $x$,
-vetor de índices $n$ e escalar $n_0$ (positivo, negativo ou nulo):
+Para cada índice $n_i$ do vetor $n$, a função busca o valor de $x$ correspondente
+ao índice $n_i - n_0$ dentro do domínio original de $x$; caso esse índice não
+exista nesse domínio, o valor retornado é 0. Dessa forma, $y$ fica definido sobre
+o \textbf{mesmo} vetor de índices $n$ recebido como parâmetro, permitindo plotar
+$x$ e $y$ diretamente no mesmo eixo, como pedido no enunciado. A implementação é
+válida para qualquer vetor $x$, vetor de índices $n$ (não necessariamente
+começando em 0 ou contíguo) e escalar $n_0$ (positivo, negativo ou nulo).
 
 \begin{verbatim}
 def Deslocamento_Tempo(x, n, n0):
     x = np.asarray(x)
-    y = x.copy()
+    n = np.asarray(n)
+    y = np.zeros_like(x, dtype=float)
+    for i, ni in enumerate(n):
+        alvo = ni - n0
+        pos = np.where(n == alvo)[0]
+        if pos.size > 0:
+            y[i] = x[pos[0]]
+        else:
+            y[i] = 0
     return y
 \end{verbatim}
 
 \subsection*{Exemplo}
 
-Como exemplo, considerou-se $x[n]$ um pulso triangular definido para
-$n \in [-3, 5]$, com deslocamento $n_0 = 3$ (atraso de 3 amostras). Como
-$y[n] = x[n - n_0]$, o eixo de índices correspondente a $y$ é $n_y = n + n_0$.
-O gráfico abaixo mostra $x[n]$ e $y[n]$ no mesmo eixo, com legenda identificando
-cada sinal.
+Como exemplo, considerou-se $x[n]$ um pulso triangular definido para $n \in [-3, 5]$,
+com deslocamento $n_0 = 3$ (atraso de 3 amostras). O gráfico abaixo mostra $x[n]$ e
+$y[n]$ no mesmo eixo $n$, com legenda identificando cada sinal — note os zeros nas
+bordas onde o sinal deslocado ainda não "entrou" no domínio observado.
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.7\textwidth]{images/grafico_2_deslocamento.png}
+    \includegraphics[width=0.7\textwidth]{grafico_2.png}
+    \caption{Deslocamento no tempo: $x[n]$ e $y[n] = x[n-3]$}
 \end{figure}
 
 \section*{Questão 3}
