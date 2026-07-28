@@ -3,6 +3,7 @@
 \usepackage[portuguese]{babel}
 \usepackage{amsmath, amssymb}
 \usepackage{graphicx}
+\usepackage{float}                  % permite o especificador [H] (posição exata)
 \usepackage[margin=2.5cm]{geometry}
 
 \title{1ª Avaliação - Processamento Digital de Sinais}
@@ -64,7 +65,7 @@ para explicar o item (b).
 \bigskip
 \noindent\textit{Gráfico comprovando a periodicidade:}
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{images/grafico_1a.png}
 \end{figure}
@@ -103,16 +104,17 @@ relação não vale — dobrar a frequência manteve $N = 5$ e quintuplicá-la r
 a uma constante. A razão é que apenas a frequência \textbf{módulo $2\pi$} importa, e o
 período precisa ser um número \textbf{inteiro} de amostras.
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{images/grafico_1b_x2.png}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{images/grafico_1b_x5.png}
 \end{figure}
 
+\clearpage
 \section*{Questão 2}
 
 Foi implementada, em Python, a função \texttt{Deslocamento\_Tempo(x, n, n0)}, que
@@ -153,12 +155,13 @@ com deslocamento $n_0 = 3$ (atraso de 3 amostras). O gráfico abaixo mostra $x[n
 $y[n]$ no mesmo eixo $n$, com legenda identificando cada sinal — note os zeros nas
 bordas onde o sinal deslocado ainda não "entrou" no domínio observado.
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{images/grafico_2.png}
     \caption{Deslocamento no tempo: $x[n]$ e $y[n] = x[n-3]$}
 \end{figure}
 
+\clearpage
 \section*{Questão 3}
 
 Para um sistema linear e invariante no tempo, a saída é dada pela convolução
@@ -228,6 +231,7 @@ Portanto,
 \boxed{y[n]=\left\{1,\frac{5}{2},4,\frac{3}{2}\right\}}.
 \]
 
+\clearpage
 \section*{Questão 4}
 
 A equação fornecida pode ser reescrita como
@@ -304,6 +308,7 @@ $200$ e prazo de $12$ meses:
 \end{aligned}
 \]
 
+\clearpage
 \section*{Questão 5}
 
 Dada a equação de diferenças
@@ -462,7 +467,7 @@ Na curva de fase são traçadas duas versões: o \textbf{valor principal}, devol
 representação --- e não descontinuidades do sistema ---, o que fica evidente ao
 compará-la com a segunda, contínua.
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{images/grafico_5_mag_fase.png}
     \caption{Magnitude e fase de $H(e^{j\omega})$ em $-\pi < \omega \le \pi$.}
@@ -560,7 +565,7 @@ obtida \textbf{iterando diretamente a equação de diferenças original}. As dua
 coincidem com erro máximo da ordem de $10^{-16}$, ou seja, dentro da precisão numérica
 da máquina --- o que confirma tanto a $H(z)$ obtida quanto a expressão final de $y[n]$.
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{images/grafico_5_xy.png}
     \caption{Entrada $x[n]=\cos(\pi n/4)$ e saída $y[n]$ do sistema.}
