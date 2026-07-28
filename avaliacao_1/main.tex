@@ -6,7 +6,7 @@
 \usepackage[margin=2.5cm]{geometry}
 
 \title{1ª Avaliação - Processamento Digital de Sinais}
-\author{Ana Iara Loayza Costa, José Victor Brito Costa e Milena Freire Britto Neves}
+\author{Ana Iara Loayza Costa \and José Victor Brito Costa \and Milena Freire Britto Neves}
 \date{28/07/2026}
 
 \begin{document}
@@ -16,23 +16,50 @@
 
 \subsection*{a) }
 
-Um sinal senoidal discreto $x[n] = A\cos(\omega_0 n + \theta)$ é periódico se, e somente se,
-existir $N \in \mathbb{Z}^+$ e $r \in \mathbb{Z}$ tais que:
+Um sinal discreto é periódico se existir um inteiro $N > 0$ tal que $x[n] = x[n+N]$
+para todo $n$. Impondo essa condição a $x[n] = A\cos(\omega_0 n + \theta)$:
+\[
+A\cos(\omega_0 n + \theta) = A\cos\big(\omega_0(n+N) + \theta\big)
+ = A\cos(\omega_0 n + \omega_0 N + \theta),
+\]
+a igualdade só vale quando $\omega_0 N$ é múltiplo inteiro de $2\pi$. Logo, o sinal é
+periódico se, e somente se, existirem $N \in \mathbb{Z}^+$ e $r \in \mathbb{Z}$ tais que:
 \[
 \omega_0 N = 2\pi r
 \]
 
 Para o sinal dado, $\omega_0 = \dfrac{12\pi}{5}$ e $\theta = 0$. Substituindo:
 \[
-\frac{12\pi}{5}N = 2\pi r \;\Rightarrow\; N = \frac{5r}{6}
+\frac{12\pi}{5}N = 2\pi r \;\Rightarrow\; N = \frac{2\pi r \cdot 5}{12\pi} = \frac{5r}{6}
 \]
 
-O menor valor inteiro de $r$ que torna $N$ inteiro é $r = 6$, resultando em:
+Como $N$ precisa ser inteiro e $5$ e $6$ são primos entre si, $r$ deve ser múltiplo de
+$6$. O menor valor inteiro positivo é $r = 6$, resultando em:
 \[
 N = \frac{5 \cdot 6}{6} = 5
 \]
 
 Portanto, $x[n]$ é periódico, com período fundamental $N = 5$.
+
+\medskip
+\noindent\textbf{Verificação direta:}
+\[
+x[n+5] = \cos\!\left(\frac{12\pi}{5}(n+5)\right)
+       = \cos\!\left(\frac{12\pi}{5}n + 12\pi\right)
+       = \cos\!\left(\frac{12\pi}{5}n\right) = x[n],
+\]
+pois $12\pi = 6 \cdot 2\pi$ é múltiplo inteiro de $2\pi$.
+
+\medskip
+\noindent\textbf{Frequência equivalente.} Note que $\omega_0 = \frac{12\pi}{5} = 2{,}4\pi$
+está fora do intervalo fundamental $-\pi < \omega \le \pi$. Como senoides discretas cujas
+frequências diferem de $2\pi$ são indistinguíveis,
+\[
+\omega_0 = 2{,}4\pi \equiv 2{,}4\pi - 2\pi = 0{,}4\pi,
+\]
+isto é, $x[n] = \cos(0{,}4\pi n)$, o que leva ao mesmo período:
+$0{,}4\pi N = 2\pi r \Rightarrow N = 5r \Rightarrow N = 5$. Essa observação é a chave
+para explicar o item (b).
 
 \bigskip
 \noindent\textit{Gráfico comprovando a periodicidade:}
@@ -44,23 +71,37 @@ Portanto, $x[n]$ é periódico, com período fundamental $N = 5$.
 
 \subsection*{b) }
 
-\textbf{Multiplicando por 2:} $\omega_0' = \dfrac{24\pi}{5}$
+\textbf{Multiplicando por 2:} $\omega_0' = 2 \cdot \dfrac{12\pi}{5} = \dfrac{24\pi}{5}$
 \[
 \frac{24\pi}{5}N = 2\pi r \;\Rightarrow\; N = \frac{5r}{12}
 \]
-Menor $r$ inteiro válido: $r = 12 \Rightarrow N = 5$.
+$N$ inteiro exige $r$ múltiplo de $12$; o menor é $r = 12 \Rightarrow N = 5$. O período
+\textbf{não muda}.
 
- O período permanece $N = 5$, mesmo dobrando a frequência. Isso explica uma
-propriedade importante dos sinais discretos: diferentemente do caso contínuo
-($T = 2\pi/f$, inversamente proporcional à frequência), no caso discreto essa
-relação não é garantida.
+\textit{Por quê?} Usando a frequência equivalente:
+$\omega_0' = 4{,}8\pi \equiv 4{,}8\pi - 4\pi = 0{,}8\pi$, ou seja,
+$x_2[n] = \cos(0{,}8\pi n)$. Dobrar $\omega_0$ levou a frequência de $0{,}4\pi$ para
+$0{,}8\pi$ — ainda dentro de $(0,\pi)$ — e o período continua $5$, pois
+$0{,}8\pi N = 2\pi r \Rightarrow N = 2{,}5r \Rightarrow r = 2,\ N = 5$.
 
-\textbf{Multiplicando por 5:} $\omega_0'' = 12\pi$
+\medskip
+\textbf{Multiplicando por 5:} $\omega_0'' = 5 \cdot \dfrac{12\pi}{5} = 12\pi$
 \[
 12\pi N = 2\pi r \;\Rightarrow\; N = \frac{r}{6}
 \]
-Menor $r$ inteiro válido: $r = 6 \Rightarrow N = 1$. Como $12\pi n$ é sempre múltiplo inteiro de $2\pi$, temos $\cos(12\pi n) = 1$
-para todo $n$, ou seja, o sinal se torna constante (período trivial $N=1$).
+Menor $r$ inteiro válido: $r = 6 \Rightarrow N = 1$.
+
+\textit{Por quê?} $\omega_0'' = 12\pi \equiv 0$: a frequência equivalente é
+\textbf{zero}. Como $12\pi n$ é sempre múltiplo inteiro de $2\pi$, temos
+$\cos(12\pi n) = 1$ para todo $n$, ou seja, o sinal se torna constante
+(período trivial $N=1$).
+
+\medskip
+\noindent\textbf{Conclusão.} Nos sinais contínuos, $T = 2\pi/\omega_0$: aumentar a
+frequência sempre diminui o período, na proporção inversa. Nos sinais discretos essa
+relação não vale — dobrar a frequência manteve $N = 5$ e quintuplicá-la reduziu o sinal
+a uma constante. A razão é que apenas a frequência \textbf{módulo $2\pi$} importa, e o
+período precisa ser um número \textbf{inteiro} de amostras.
 
 \begin{figure}[h!]
     \centering
@@ -93,14 +134,15 @@ começando em 0 ou contíguo) e escalar $n_0$ (positivo, negativo ou nulo).
 def Deslocamento_Tempo(x, n, n0):
     x = np.asarray(x)
     n = np.asarray(n)
-    y = np.zeros_like(x, dtype=float)
+    if x.size != n.size:
+        raise ValueError("x e n devem ter o mesmo tamanho.")
+
+    y = np.zeros(n.size, dtype=float)
     for i, ni in enumerate(n):
         alvo = ni - n0
         pos = np.where(n == alvo)[0]
         if pos.size > 0:
             y[i] = x[pos[0]]
-        else:
-            y[i] = 0
     return y
 \end{verbatim}
 
@@ -237,19 +279,16 @@ Quando $r=0$:
 
 \begin{verbatim}
 def Investimento(y0, r, x, n):
-    if not isinstance(n, (int, np.integer)) or isinstance(n, (bool, np.bool_)):
-        raise TypeError("n deve ser um número inteiro de meses.")
     if n < 0:
-        raise ValueError("n não pode ser negativo.")
+        raise ValueError("n nao pode ser negativo.")
     if r <= -1:
         raise ValueError("r deve ser maior que -1.")
 
-    if np.isclose(r, 0.0):
+    if r == 0:
         return y0 + n*x
 
-    fator = (1 + r)**n
-    soma_aportes = np.expm1(n*np.log1p(r))/r
-    return y0*fator + x*soma_aportes
+    fator = (1 + r)**n                  # (1+r)^n
+    return y0*fator + x*(fator - 1)/r   # y0(1+r)^n + x[(1+r)^n - 1]/r
 \end{verbatim}
 
 \subsection*{Exemplo}
@@ -276,81 +315,256 @@ saída para uma entrada senoidal.
 
 \subsection*{a) Função de transferência $H(z)$}
 
-Aplicando a transformada $z$ e usando a propriedade do deslocamento
-($x[n-k]\leftrightarrow z^{-k}X(z)$), agrupam-se os termos em $X(z)$ e $Y(z)$:
+\noindent\textbf{Usando a forma padrão.} Passando os termos de saída para o lado
+esquerdo:
+\[
+y[n] - 1{,}63\,y[n-1] + 0{,}70\,y[n-2] = 0{,}038\,x[n-1] + 0{,}034\,x[n-2].
+\]
+
+\noindent\textbf{Agora temos a transformada $z$.} Pela propriedade do deslocamento,
+$x[n-k] \leftrightarrow z^{-k}X(z)$ (válida com condições iniciais nulas, hipótese
+usada para definir a função de transferência):
+\[
+Y(z) - 1{,}63\,z^{-1}Y(z) + 0{,}70\,z^{-2}Y(z)
+ = 0{,}038\,z^{-1}X(z) + 0{,}034\,z^{-2}X(z).
+\]
+
+\noindent\textbf{Evidenciando $Y(z)$ e $X(z)$:}
 \[
 Y(z)\left(1 - 1{,}63\,z^{-1} + 0{,}70\,z^{-2}\right)
 = X(z)\left(0{,}038\,z^{-1} + 0{,}034\,z^{-2}\right).
 \]
-Isolando a razão entre saída e entrada:
+
+\noindent\textbf{Isolando $Y(z)/X(z)$:}
 \[
 \boxed{
 H(z) = \frac{Y(z)}{X(z)}
 = \frac{0{,}038\,z^{-1} + 0{,}034\,z^{-2}}{1 - 1{,}63\,z^{-1} + 0{,}70\,z^{-2}}
-= \frac{0{,}038\,z + 0{,}034}{z^{2} - 1{,}63\,z + 0{,}70}.
 }
 \]
-As raízes do denominador (polos) são $z = 0{,}815 \pm 0{,}189j$, com módulo
-$|z| \approx 0{,}837 < 1$. Como todos os polos estão dentro do círculo unitário,
-o sistema é \textbf{estável} e a resposta em frequência está bem definida.
+Multiplicando numerador e denominador por $z^{2}$, obtém-se a forma em potências
+positivas:
+\[
+H(z) = \frac{0{,}038\,z + 0{,}034}{z^{2} - 1{,}63\,z + 0{,}70}.
+\]
+
+\noindent\textbf{Polos e zeros.} O zero finito vem de $0{,}038z + 0{,}034 = 0$, isto é,
+$z = -0{,}034/0{,}038 = -0{,}895$. Os polos vêm de $z^{2} - 1{,}63z + 0{,}70 = 0$:
+\[
+z = \frac{1{,}63 \pm \sqrt{1{,}63^{2} - 4(0{,}70)}}{2}
+  = \frac{1{,}63 \pm \sqrt{-0{,}1431}}{2}
+  = 0{,}815 \pm 0{,}189j.
+\]
+Como o produto das raízes é o termo independente, $z_1 z_2 = |z|^2 = 0{,}70$, logo
+\[
+|z| = \sqrt{0{,}70} \approx 0{,}8367 < 1.
+\]
+
+\noindent\textbf{Região de convergência e estabilidade.} O sistema é causal (a saída
+depende apenas de amostras passadas), então a RDC é $|z| > 0{,}8367$, o exterior do
+círculo que passa pelos polos. Como essa RDC \textbf{contém o círculo unitário}
+$|z| = 1$, o sistema é BIBO-estável e a resposta em frequência $H(e^{j\omega})$
+existe --- condição necessária para os itens seguintes.
 
 \subsection*{b) Representação de $H(z)$ em função da frequência}
 
-Substituindo $z = e^{j\omega}$ na função de transferência:
+A resposta em frequência é obtida avaliando $H(z)$ sobre o círculo unitário, isto é,
+fazendo $z = e^{j\omega}$ (passo legítimo porque a RDC contém $|z| = 1$):
 \[
 H(e^{j\omega}) =
 \frac{0{,}038\,e^{-j\omega} + 0{,}034\,e^{-j2\omega}}
-     {1 - 1{,}63\,e^{-j\omega} + 0{,}70\,e^{-j2\omega}}.
+     {1 - 1{,}63\,e^{-j\omega} + 0{,}70\,e^{-j2\omega}}
+= \frac{N(e^{j\omega})}{D(e^{j\omega})}.
 \]
-A \textbf{magnitude} é dada por $\left|H(e^{j\omega})\right|$ e a \textbf{fase}
-por $\angle H(e^{j\omega})$, ambas funções da frequência angular $\omega$.
+
+\noindent\textbf{Separando parte real e imaginária.} Aplicando a fórmula de Euler,
+$e^{-jk\omega} = \cos(k\omega) - j\,\mathrm{sen}(k\omega)$:
+\[
+\begin{aligned}
+N(e^{j\omega}) &= \underbrace{\big[0{,}038\cos\omega + 0{,}034\cos 2\omega\big]}_{N_R(\omega)}
+ + j\underbrace{\big[-0{,}038\,\mathrm{sen}\,\omega - 0{,}034\,\mathrm{sen}\,2\omega\big]}_{N_I(\omega)},\\[2mm]
+D(e^{j\omega}) &= \underbrace{\big[1 - 1{,}63\cos\omega + 0{,}70\cos 2\omega\big]}_{D_R(\omega)}
+ + j\underbrace{\big[1{,}63\,\mathrm{sen}\,\omega - 0{,}70\,\mathrm{sen}\,2\omega\big]}_{D_I(\omega)}.
+\end{aligned}
+\]
+
+Como o módulo de um quociente é o quociente dos módulos, e a fase de um quociente é a
+diferença das fases:
+\[
+\boxed{
+\left|H(e^{j\omega})\right| =
+\frac{\sqrt{N_R^2(\omega) + N_I^2(\omega)}}{\sqrt{D_R^2(\omega) + D_I^2(\omega)}}
+}
+\qquad
+\boxed{
+\angle H(e^{j\omega}) =
+\operatorname{arctg}\frac{N_I(\omega)}{N_R(\omega)}
+- \operatorname{arctg}\frac{D_I(\omega)}{D_R(\omega)}
+}
+\]
+Nas contas numéricas usa-se \texttt{arctan2}, que resolve corretamente o quadrante.
+
+\medskip
+\noindent\textbf{Forma compacta da magnitude via $|H|^2 = HH^{*}$.} Colocando
+$e^{-j\omega}$ em evidência no numerador,
+$N = e^{-j\omega}\big(0{,}038 + 0{,}034\,e^{-j\omega}\big)$, e como
+$|e^{-j\omega}| = 1$:
+\[
+\begin{aligned}
+|N|^2 &= \left|0{,}038 + 0{,}034e^{-j\omega}\right|^2
+= 0{,}038^2 + 0{,}034^2 + 2(0{,}038)(0{,}034)\cos\omega\\
+      &= 0{,}002600 + 0{,}002584\cos\omega.
+\end{aligned}
+\]
+Fazendo $|D|^2 = DD^{*}$ e usando $e^{-jk\omega} + e^{jk\omega} = 2\cos k\omega$:
+\[
+\begin{aligned}
+|D|^2 &= \big(1 + 1{,}63^2 + 0{,}70^2\big)
+ - 2\big(1{,}63 + 1{,}63 \cdot 0{,}70\big)\cos\omega + 2(0{,}70)\cos 2\omega\\
+      &= 4{,}1469 - 5{,}542\cos\omega + 1{,}40\cos 2\omega.
+\end{aligned}
+\]
+Portanto:
+\[
+\boxed{
+\left|H(e^{j\omega})\right| =
+\sqrt{\frac{0{,}002600 + 0{,}002584\cos\omega}
+           {4{,}1469 - 5{,}542\cos\omega + 1{,}40\cos 2\omega}}
+}
+\]
+As duas formas são equivalentes --- a verificação numérica feita no notebook acusa
+erro máximo da ordem de $10^{-14}$.
+
+\medskip
+\noindent\textbf{Intervalo de $\omega$.} Como os coeficientes da equação de diferenças
+são reais, vale a simetria hermitiana $H(e^{-j\omega}) = H^{*}(e^{j\omega})$: a
+magnitude é \textbf{par} e a fase é \textbf{ímpar}. Além disso, $H(e^{j\omega})$ é
+periódica de período $2\pi$. Por isso basta representar $\omega$ no intervalo
+$-\pi < \omega \le \pi$.
 
 \subsection*{c) Gráficos da magnitude e da fase}
 
-Os gráficos abaixo mostram a magnitude e a fase de $H(e^{j\omega})$ para
-$\omega \in [0, \pi]$. Observa-se um comportamento de filtro que atenua as altas
-frequências e a região em torno de $\omega = \pi/4$.
+A Figura~\ref{fig:magfase} mostra a magnitude e a fase de $H(e^{j\omega})$ no
+intervalo fundamental $-\pi < \omega \le \pi$. Confirma-se a simetria prevista no item
+(b): magnitude par e fase ímpar.
+
+O sistema comporta-se como um \textbf{filtro passa-baixas}: o ganho vale
+$|H(e^{j0})| = 1{,}0286$ em frequência nula, apresenta um leve pico de ressonância de
+$1{,}0589$ em $\omega \approx 0{,}14$ rad (efeito dos polos complexos, situados no
+ângulo $\pm 0{,}228$ rad) e decai a $|H(e^{j\pi})| = 0{,}0012$ na frequência de
+Nyquist. A frequência de corte de $-3$\,dB fica em torno de $\omega \approx 0{,}33$
+rad ($\approx 0{,}10\pi$), de modo que $\omega = \pi/4$ (linha pontilhada) já está bem
+dentro da banda de rejeição.
+
+Na curva de fase são traçadas duas versões: o \textbf{valor principal}, devolvido por
+\texttt{arctan2} e sempre restrito a $(-\pi, \pi]$, e a \textbf{fase desenrolada}
+(\textit{unwrap}). Os saltos verticais de $2\pi$ da primeira curva são um artefato da
+representação --- e não descontinuidades do sistema ---, o que fica evidente ao
+compará-la com a segunda, contínua.
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/grafico_5_mag_fase.png}
-    \caption{Magnitude e fase da resposta em frequência $H(e^{j\omega})$.}
+    \includegraphics[width=0.85\textwidth]{images/grafico_5_mag_fase.png}
+    \caption{Magnitude e fase de $H(e^{j\omega})$ em $-\pi < \omega \le \pi$.}
+    \label{fig:magfase}
 \end{figure}
 
 \subsection*{d) Saída para $x[n] = \cos\!\left(\frac{\pi}{4}n\right)$}
 
-Para um sistema LIT estável, a resposta em regime permanente a uma senoide
-$x[n] = \cos(\omega_0 n)$ é a mesma senoide, escalada em amplitude por
-$\left|H(e^{j\omega_0})\right|$ e defasada por $\angle H(e^{j\omega_0})$:
+\noindent\textbf{Propriedade utilizada.} Para um sistema LIT estável, a exponencial
+complexa é autofunção: se a entrada é $e^{j\omega_0 n}$, a saída é
+$H(e^{j\omega_0})e^{j\omega_0 n}$. Escrevendo o cosseno como soma de exponenciais e
+usando a simetria hermitiana, obtém-se o resultado clássico: para
+$x[n] = \cos(\omega_0 n)$,
 \[
 y[n] = \left|H(e^{j\omega_0})\right|\,
 \cos\!\big(\omega_0 n + \angle H(e^{j\omega_0})\big).
 \]
-Com $\omega_0 = \dfrac{\pi}{4}$, avalia-se $H(e^{j\omega})$ nesse ponto:
+Ou seja, o sistema \textbf{não cria novas frequências}: apenas escala a amplitude por
+$|H|$ e desloca a fase por $\angle H$.
+
+\medskip
+\noindent\textbf{Inicialmente, identifica-se a frequência.} Comparando
+$x[n] = \cos(\pi n/4)$ com $\cos(\omega_0 n)$: $\omega_0 = \dfrac{\pi}{4}$.
+
+\noindent\textbf{Avaliando os exponenciais.}
 \[
-\left|H(e^{j\pi/4})\right| \approx 0{,}1393,
+e^{-j\pi/4} = \cos\tfrac{\pi}{4} - j\,\mathrm{sen}\tfrac{\pi}{4}
+ = 0{,}70711 - 0{,}70711j,
 \qquad
-\angle H(e^{j\pi/4}) \approx -3{,}051\ \text{rad}\ (\approx -174{,}8^\circ).
+e^{-j\pi/2} = -j.
 \]
-Portanto, a saída em regime permanente é
+
+\noindent\textbf{Numerador e denominador:}
+\[
+\begin{aligned}
+N &= 0{,}038(0{,}70711 - 0{,}70711j) + 0{,}034(-j) = 0{,}026870 - 0{,}060870j,\\
+D &= 1 - 1{,}63(0{,}70711 - 0{,}70711j) + 0{,}70(-j)\\
+  &= 1 - 1{,}152584 + 1{,}152584j - 0{,}70j = -0{,}152584 + 0{,}452584j.
+\end{aligned}
+\]
+
+\noindent\textbf{Módulos e fases:}
+\[
+\begin{aligned}
+|N| &= \sqrt{0{,}026870^2 + 0{,}060870^2} = 0{,}066537,\\
+\angle N &= \operatorname{arctg2}(-0{,}060870;\ 0{,}026870) = -1{,}15509 \text{ rad},\\[1mm]
+|D| &= \sqrt{0{,}152584^2 + 0{,}452584^2} = 0{,}477613,\\
+\angle D &= \operatorname{arctg2}(0{,}452584;\ -0{,}152584) = +1{,}89597 \text{ rad}.
+\end{aligned}
+\]
+
+\noindent\textbf{Combinando:}
+\[
+\left|H(e^{j\pi/4})\right| = \frac{|N|}{|D|}
+ = \frac{0{,}066537}{0{,}477613} = 0{,}13931,
+\]
+\[
+\angle H(e^{j\pi/4}) = \angle N - \angle D
+ = -1{,}15509 - 1{,}89597 = -3{,}05106 \text{ rad} \approx -174{,}81^\circ.
+\]
+
+O mesmo valor de magnitude resulta da fórmula fechada do item (b):
+$|N|^2 = 0{,}002600 + 0{,}002584\cos\frac{\pi}{4} = 0{,}0044272$ e
+$|D|^2 = 4{,}1469 - 5{,}542\cos\frac{\pi}{4} + 1{,}40\cos\frac{\pi}{2} = 0{,}2281142$,
+de onde $|H| = \sqrt{0{,}0044272/0{,}2281142} = 0{,}13931$.
+
+\medskip
+\noindent\textbf{Resultado:}
 \[
 \boxed{
-y[n] \approx 0{,}1393\,\cos\!\left(\frac{\pi}{4}n - 3{,}051\right).
+y[n] = 0{,}13931\,\cos\!\left(\frac{\pi}{4}n - 3{,}05106\right)
 }
 \]
-O sistema atenua fortemente essa frequência (ganho $\approx 0{,}14$) e introduz
-uma defasagem de quase meia volta.
+
+\noindent\textbf{Interpretação.} Como $\omega_0 = \pi/4$ está na banda de rejeição do
+filtro passa-baixas, a senoide é atenuada a cerca de $14\%$ da amplitude original. A
+fase de $\approx -3{,}05$ rad (quase $-\pi$) significa que a saída fica praticamente
+\textbf{invertida} em relação à entrada.
+
+\medskip
+\noindent\textbf{Observação sobre o regime.} A expressão acima é a resposta ao cosseno
+\textit{permanente} (aplicado desde $n \to -\infty$), convenção adotada em sala. Se a
+senoide fosse ligada apenas em $n = 0$, haveria ainda um transitório devido aos polos,
+que decai como $|z|^n = 0{,}8367^n$ e se torna desprezível após algumas dezenas de
+amostras.
 
 \subsection*{e) Gráfico de $x[n]$ e $y[n]$}
 
-O gráfico a seguir apresenta a entrada $x[n]$ e a saída $y[n]$ no mesmo eixo, com
-legendas discriminando os sinais. Nota-se a forte redução de amplitude e o
-deslocamento de fase previstos analiticamente.
+A Figura~\ref{fig:xy} apresenta a entrada $x[n]$ e a saída $y[n]$ no mesmo eixo, com
+legendas discriminando os sinais. Observa-se a forte redução de amplitude
+($1 \rightarrow 0{,}139$) e a inversão de fase previstas analiticamente.
+
+Para validar a dedução do item (d), o notebook compara essa saída analítica com a
+obtida \textbf{iterando diretamente a equação de diferenças original}. As duas
+coincidem com erro máximo da ordem de $10^{-16}$, ou seja, dentro da precisão numérica
+da máquina --- o que confirma tanto a $H(z)$ obtida quanto a expressão final de $y[n]$.
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/grafico_5_xy.png}
-    \caption{Entrada $x[n]=\cos(\pi n/4)$ e saída $y[n]$ em regime permanente.}
+    \includegraphics[width=0.85\textwidth]{images/grafico_5_xy.png}
+    \caption{Entrada $x[n]=\cos(\pi n/4)$ e saída $y[n]$ do sistema.}
+    \label{fig:xy}
 \end{figure}
 
 \end{document}

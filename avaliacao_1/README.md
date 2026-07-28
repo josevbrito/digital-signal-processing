@@ -96,7 +96,10 @@ pasta `images/`.
    $\{1, 2{,}5, 4, 1{,}5\}$.
 4. **Questão 4** — Enfatizar que a solução é **fechada** (fórmula fechada, não
    iteração), com o exemplo dando R\$ 3.663,33.
-5. **Questão 5** — Deduzir $H(z)$, confirmar estabilidade (polos com
-   $|z|\approx 0{,}837 < 1$) e mostrar que o sistema atenua $\omega=\pi/4$
-   (ganho $\approx 0{,}14$) com forte defasagem — visível no gráfico de
-   $x[n]$ vs. $y[n]$.
+5. **Questão 5** — Deduzir $H(z)$ passo a passo; confirmar a estabilidade pela
+   RDC ($|z| > 0{,}837$ contém o círculo unitário, por isso $H(e^{j\omega})$
+   existe); caracterizar o sistema como **filtro passa-baixas** (ganho $1{,}03$
+   em $\omega=0$, $0{,}0012$ em $\omega=\pi$); e mostrar que em $\omega=\pi/4$
+   o ganho é $0{,}139$ com fase $-3{,}051$ rad — quase inversão. Vale destacar
+   que a saída analítica foi **validada** contra a iteração direta da equação
+   de diferenças (erro $\sim 10^{-16}$).
