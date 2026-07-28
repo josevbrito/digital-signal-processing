@@ -5,8 +5,8 @@
 \usepackage{graphicx}
 \usepackage[margin=2.5cm]{geometry}
 
-\title{1ª Avaliação — Processamento Digital de Sinais}
-\author{Milena Freire Britto Neves, Ana Iara Loayza Costa, José Victor Brito Costa}
+\title{1ª Avaliação - Processamento Digital de Sinais}
+\author{Ana Iara Loayza Costa, José Victor Brito Costa e Milena Freire Britto Neves}
 \date{28/07/2026}
 
 \begin{document}
@@ -264,5 +264,93 @@ $200$ e prazo de $12$ meses:
 &\approx 3663{,}33.
 \end{aligned}
 \]
+
+\section*{Questão 5}
+
+Dada a equação de diferenças
+\[
+y[n] = 0{,}038\,x[n-1] + 0{,}034\,x[n-2] + 1{,}63\,y[n-1] - 0{,}70\,y[n-2],
+\]
+determinam-se a seguir a função de transferência, a resposta em frequência e a
+saída para uma entrada senoidal.
+
+\subsection*{a) Função de transferência $H(z)$}
+
+Aplicando a transformada $z$ e usando a propriedade do deslocamento
+($x[n-k]\leftrightarrow z^{-k}X(z)$), agrupam-se os termos em $X(z)$ e $Y(z)$:
+\[
+Y(z)\left(1 - 1{,}63\,z^{-1} + 0{,}70\,z^{-2}\right)
+= X(z)\left(0{,}038\,z^{-1} + 0{,}034\,z^{-2}\right).
+\]
+Isolando a razão entre saída e entrada:
+\[
+\boxed{
+H(z) = \frac{Y(z)}{X(z)}
+= \frac{0{,}038\,z^{-1} + 0{,}034\,z^{-2}}{1 - 1{,}63\,z^{-1} + 0{,}70\,z^{-2}}
+= \frac{0{,}038\,z + 0{,}034}{z^{2} - 1{,}63\,z + 0{,}70}.
+}
+\]
+As raízes do denominador (polos) são $z = 0{,}815 \pm 0{,}189j$, com módulo
+$|z| \approx 0{,}837 < 1$. Como todos os polos estão dentro do círculo unitário,
+o sistema é \textbf{estável} e a resposta em frequência está bem definida.
+
+\subsection*{b) Representação de $H(z)$ em função da frequência}
+
+Substituindo $z = e^{j\omega}$ na função de transferência:
+\[
+H(e^{j\omega}) =
+\frac{0{,}038\,e^{-j\omega} + 0{,}034\,e^{-j2\omega}}
+     {1 - 1{,}63\,e^{-j\omega} + 0{,}70\,e^{-j2\omega}}.
+\]
+A \textbf{magnitude} é dada por $\left|H(e^{j\omega})\right|$ e a \textbf{fase}
+por $\angle H(e^{j\omega})$, ambas funções da frequência angular $\omega$.
+
+\subsection*{c) Gráficos da magnitude e da fase}
+
+Os gráficos abaixo mostram a magnitude e a fase de $H(e^{j\omega})$ para
+$\omega \in [0, \pi]$. Observa-se um comportamento de filtro que atenua as altas
+frequências e a região em torno de $\omega = \pi/4$.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/grafico_5_mag_fase.png}
+    \caption{Magnitude e fase da resposta em frequência $H(e^{j\omega})$.}
+\end{figure}
+
+\subsection*{d) Saída para $x[n] = \cos\!\left(\frac{\pi}{4}n\right)$}
+
+Para um sistema LIT estável, a resposta em regime permanente a uma senoide
+$x[n] = \cos(\omega_0 n)$ é a mesma senoide, escalada em amplitude por
+$\left|H(e^{j\omega_0})\right|$ e defasada por $\angle H(e^{j\omega_0})$:
+\[
+y[n] = \left|H(e^{j\omega_0})\right|\,
+\cos\!\big(\omega_0 n + \angle H(e^{j\omega_0})\big).
+\]
+Com $\omega_0 = \dfrac{\pi}{4}$, avalia-se $H(e^{j\omega})$ nesse ponto:
+\[
+\left|H(e^{j\pi/4})\right| \approx 0{,}1393,
+\qquad
+\angle H(e^{j\pi/4}) \approx -3{,}051\ \text{rad}\ (\approx -174{,}8^\circ).
+\]
+Portanto, a saída em regime permanente é
+\[
+\boxed{
+y[n] \approx 0{,}1393\,\cos\!\left(\frac{\pi}{4}n - 3{,}051\right).
+}
+\]
+O sistema atenua fortemente essa frequência (ganho $\approx 0{,}14$) e introduz
+uma defasagem de quase meia volta.
+
+\subsection*{e) Gráfico de $x[n]$ e $y[n]$}
+
+O gráfico a seguir apresenta a entrada $x[n]$ e a saída $y[n]$ no mesmo eixo, com
+legendas discriminando os sinais. Nota-se a forte redução de amplitude e o
+deslocamento de fase previstos analiticamente.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/grafico_5_xy.png}
+    \caption{Entrada $x[n]=\cos(\pi n/4)$ e saída $y[n]$ em regime permanente.}
+\end{figure}
 
 \end{document}
