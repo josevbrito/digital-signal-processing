@@ -14,7 +14,7 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
+\usepackage{newtxtext,newtxmath}
 \usepackage{amsmath, amssymb}
 \usepackage{graphicx}
 \usepackage{booktabs}
@@ -22,6 +22,24 @@
 \usepackage{microtype}
 \usepackage{float}
 \usepackage[alf]{abntex2cite}   % citações ABNT NBR 10520 (sistema autor-data)
+
+% ---------------------------------------------------------------------
+% Tamanho dos títulos: o padrão da classe (chapter=\Huge, section=\Large)
+% foge do usual em trabalhos ABNT, em que a hierarquia é dada por
+% numeração + negrito + caixa alta, não por fonte exagerada.
+% ---------------------------------------------------------------------
+\renewcommand{\ABNTEXchapterfontsize}{\large}
+\renewcommand{\ABNTEXsectionfontsize}{\normalsize}
+\renewcommand{\ABNTEXchapterfont}{\rmfamily}   % a classe usa \sffamily por padrão
+
+\setlength{\afterchapskip}{1.0\baselineskip}
+
+\hypersetup{hidelinks}
+
+\def\clearforchapter{\relax}
+
+\makeoddhead{abntheadings}{}{}{\ABNTEXfontereduzida\thepage}
+\makeevenhead{abntheadings}{\ABNTEXfontereduzida\thepage}{}{}
 
 % ---------------------------------------------------------------------
 % Dados do trabalho
@@ -108,8 +126,8 @@ tempo discreto; FFT; núcleo de Dirichlet.
 \chapter{Introdução}
 
 A análise de sinais no domínio da frequência é um dos pilares do processamento digital
-de sinais. Enquanto a representação no tempo descreve \emph{quando} os eventos ocorrem,
-a representação em frequência revela \emph{de que} componentes oscilatórias o sinal é
+de sinais. Enquanto a representação no tempo descreve quando os eventos ocorrem,
+a representação em frequência revela de que componentes oscilatórias o sinal é
 formado --- informação essencial para projeto de filtros, compressão, modulação e
 análise espectral \cite{oppenheim2013}.
 
@@ -128,6 +146,8 @@ Capítulo~\ref{cap:z} demonstra sua ligação com a transformada~$z$; o
 Capítulo~\ref{cap:fft} trata da Transformada Rápida de Fourier. Por fim, o
 Capítulo~\ref{cap:aplicacao} apresenta a implementação computacional solicitada na
 segunda questão, obtendo o espectro de um pulso retangular com largura parametrizável.
+
+\newpage
 
 % ---------------------------------------------------------------------
 \chapter{Série de Fourier em Tempo Discreto}
@@ -180,6 +200,8 @@ de Gibbs \cite{lathi2007}.
 $a_{-k} = a_k^{*}$, de modo que a magnitude $|a_k|$ é uma função par e a fase
 $\angle a_k$ é ímpar.
 \end{alineas}
+
+\vspace{1cm}
 
 % ---------------------------------------------------------------------
 \chapter{Transformada de Fourier em Tempo Discreto}
@@ -320,12 +342,45 @@ Teorema de Parseval &
 \fonte{Adaptado de \citeonline{oppenheim2013} e \citeonline{oppenheim1999}.}
 \end{table}
 
-Três dessas propriedades merecem comentário pela importância prática:
+Cada uma dessas propriedades é comentada a seguir, na ordem em que aparecem na
+Tabela~\ref{tab:propriedades}.
 
 \begin{alineas}
+\item \textbf{Linearidade.} A TFTD é um operador linear: a transformada de uma
+combinação linear de sinais é a mesma combinação linear das transformadas individuais.
+É consequência direta da linearidade do somatório da Equação~\eqref{eq:tftd-analise} e
+permite decompor um sinal complicado em parcelas mais simples, transformar cada uma
+separadamente e somar os resultados \cite{oppenheim2013}.
+
+\item \textbf{Deslocamento no tempo.} Um atraso $n_d$ não altera a magnitude do
+espectro, apenas acrescenta uma fase linear $-\omega n_d$. Isso mostra que a informação
+sobre a \emph{posição} do sinal no eixo do tempo está contida inteiramente na fase, e não
+na magnitude, de $X(e^{j\omega})$.
+
+\item \textbf{Deslocamento em frequência.} É a propriedade dual da anterior: multiplicar
+o sinal por uma exponencial complexa $e^{j\omega_0 n}$ desloca todo o espectro de
+$\omega_0$. É o princípio por trás da \emph{modulação}, usada para transportar um sinal
+de banda base até uma faixa de frequências adequada à transmissão \cite{haykin1999}.
+
+\item \textbf{Reversão no tempo.} Inverter a ordem das amostras no tempo reflete o
+espectro em torno de $\omega = 0$. Para um sinal real, como já se tem
+$X(e^{-j\omega}) = X^{*}(e^{j\omega})$ (simetria hermitiana), reverter o tempo produz o
+mesmo efeito que conjugar o espectro.
+
+\item \textbf{Conjugação.} Conjugar o sinal no tempo conjuga \emph{e} reflete o espectro
+em frequência. Essa propriedade é a origem da simetria hermitiana discutida no
+Capítulo~\ref{cap:tftd}: como um sinal real satisfaz $x^{*}[n] = x[n]$, aplicar a
+propriedade a ambos os lados força $X^{*}(e^{-j\omega}) = X(e^{j\omega})$
+\cite{oppenheim1999}.
+
+\item \textbf{Diferenciação em frequência.} Ponderar o sinal por $n$ no tempo equivale a
+derivar o espectro em relação a $\omega$. Essa propriedade é útil, por exemplo, para obter
+o valor de $\sum n\,x[n]$ a partir da derivada de $X(e^{j\omega})$ em $\omega = 0$, sem
+precisar recalcular o somatório.
+
 \item \textbf{Convolução.} É a propriedade mais utilizada em processamento de sinais:
 a convolução no tempo, operação custosa, corresponde a uma \emph{multiplicação} no
-domínio da frequência. É o que fundamenta a filtragem digital --- a saída de um sistema
+domínio da frequência. É o que fundamenta a filtragem digital, a saída de um sistema
 LIT é obtida multiplicando-se o espectro da entrada pela resposta em frequência do
 sistema \cite{lathi2007}.
 
@@ -334,10 +389,14 @@ multiplicar no tempo equivale a uma \emph{convolução periódica} em frequênci
 explica por que truncar um sinal (aplicar uma janela) provoca espalhamento espectral,
 fenômeno observado diretamente nos lóbulos laterais do Capítulo~\ref{cap:aplicacao}.
 
-\item \textbf{Deslocamento no tempo.} Um atraso não altera a magnitude do espectro,
-apenas acrescenta uma fase linear $-\omega n_d$. Isso mostra que a informação sobre a
-\emph{posição} do sinal está contida na fase, e não na magnitude.
+\item \textbf{Teorema de Parseval.} Estabelece que a energia total do sinal, calculada
+no tempo, é igual à energia calculada a partir do espectro, a menos do fator
+$1/2\pi$, que vem da normalização da integral em um período de $2\pi$. É o que legitima
+interpretar $|X(e^{j\omega})|^2$ como uma densidade de energia por unidade de frequência
+\cite{oppenheim2013}.
 \end{alineas}
+
+\vspace{1cm}
 
 % ---------------------------------------------------------------------
 \chapter{Ligação entre a TFTD e a transformada \texorpdfstring{$z$}{z}}
@@ -386,6 +445,8 @@ um pico na magnitude da resposta em frequência, enquanto a proximidade de um ze
 produz uma depressão.
 \end{alineas}
 
+\vspace{1cm}
+
 % ---------------------------------------------------------------------
 \chapter{Transformada Rápida de Fourier}
 \label{cap:fft}
@@ -414,8 +475,7 @@ experimentalmente na Figura~\ref{fig:dftamostra}, no Capítulo~\ref{cap:aplicaca
 
 A \textbf{Transformada Rápida de Fourier} (FFT, de \emph{Fast Fourier Transform}) não é
 uma transformada diferente: é um \emph{algoritmo eficiente} para calcular exatamente a
-mesma DFT da Equação~\eqref{eq:dft}. O resultado é idêntico ao do cálculo direto ---
-apenas se obtém muito mais rápido.
+mesma DFT da Equação~\eqref{eq:dft}. O resultado é idêntico ao do cálculo direto, apenas se obtém muito mais rápido.
 
 O cálculo direto da DFT exige, para cada um dos $N$ valores de $k$, um somatório de $N$
 termos, resultando em $N^2$ multiplicações complexas: complexidade $O(N^2)$. O algoritmo
@@ -428,7 +488,7 @@ recursivamente, obtêm-se $\log_2 N$ estágios, cada um com $N/2$ operações el
 \cite{oppenheim2013}.
 
 A Tabela~\ref{tab:fft} quantifica a economia. Para $N = 4096$, a FFT é cerca de
-683~vezes mais rápida --- ganho que viabiliza aplicações em tempo real.
+683~vezes mais rápida, ganho que viabiliza aplicações em tempo real.
 
 \begin{table}[H]
 \centering
@@ -540,8 +600,7 @@ com que o resultado saia real, como previsto pela teoria.
 \section{Resultados}
 
 A Figura~\ref{fig:espectro} apresenta o espectro obtido para $M = 4$. O painel superior
-mostra $X(e^{j\omega})$ com sinal, sobreposto às amostras da FFT --- a coincidência é
-total. O painel central mostra a magnitude, com o primeiro zero em
+mostra $X(e^{j\omega})$ com sinal, sobreposto às amostras da FFT. O painel central mostra a magnitude, com o primeiro zero em
 $\omega = \pm 2\pi/9 \approx \pm 0{,}698$~rad, e o inferior mostra a fase alternando
 entre $0$ e $\pi$.
 
@@ -638,6 +697,8 @@ analiticamente ao núcleo de Dirichlet e confirmando-se o resultado por três ca
 independentes, com erros da ordem de $10^{-14}$. A generalização da largura evidenciou a
 relação inversa entre a duração no tempo e a ocupação em frequência, um dos princípios
 mais fundamentais da análise de sinais.
+
+\newpage
 
 % =====================================================================
 % ELEMENTOS PÓS-TEXTUAIS
