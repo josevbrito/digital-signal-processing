@@ -40,6 +40,7 @@
 
 \makeoddhead{abntheadings}{}{}{\ABNTEXfontereduzida\thepage}
 \makeevenhead{abntheadings}{\ABNTEXfontereduzida\thepage}{}{}
+\makeheadrule{abntheadings}{\textwidth}{0pt}
 
 % ---------------------------------------------------------------------
 % Dados do trabalho
@@ -128,7 +129,7 @@ tempo discreto; FFT; núcleo de Dirichlet.
 A análise de sinais no domínio da frequência é um dos pilares do processamento digital
 de sinais. Enquanto a representação no tempo descreve quando os eventos ocorrem,
 a representação em frequência revela de que componentes oscilatórias o sinal é
-formado --- informação essencial para projeto de filtros, compressão, modulação e
+formado, informação essencial para projeto de filtros, compressão, modulação e
 análise espectral \cite{oppenheim2013}.
 
 Para sinais de tempo discreto, essa representação assume duas formas complementares,
@@ -192,7 +193,7 @@ relação ao caso contínuo. Como
 \end{equation}
 os coeficientes se repetem. Consequentemente, existem apenas $N$ coeficientes
 \emph{distintos}, e o somatório da Equação~\eqref{eq:sftd-sintese} é
-\textbf{finito} --- ao contrário da série de Fourier de tempo contínuo, que envolve
+\textbf{finito}, ao contrário da série de Fourier de tempo contínuo, que envolve
 infinitos termos. Por isso a SFTD não apresenta problemas de convergência nem fenômeno
 de Gibbs \cite{lathi2007}.
 
@@ -224,7 +225,7 @@ função contínua da frequência. Obtém-se assim o par de transformadas
     \label{eq:tftd-sintese}
 \end{equation}
 
-A notação $X(e^{j\omega})$ --- em vez de $X(\omega)$ --- não é arbitrária: ela
+A notação $X(e^{j\omega})$, em vez de $X(\omega)$, não é arbitrária: ela
 antecipa a ligação com a transformada~$z$ discutida no Capítulo~\ref{cap:z}.
 
 Quanto à existência, a série da Equação~\eqref{eq:tftd-analise} converge
@@ -420,8 +421,8 @@ exatamente a \textbf{TFTD da sequência ponderada} $x[n]\,r^{-n}$. O fator $r^{-
 como uma exponencial de convergência: é ele que permite à transformada~$z$ existir para
 sinais que não possuem TFTD, como o degrau unitário \cite{oppenheim1999}.
 
-Fazendo $r = 1$ --- isto é, restringindo $z$ à \textbf{circunferência unitária}
-$|z| = 1$ --- o fator de ponderação desaparece e obtém-se
+Fazendo $r = 1$, isto é, restringindo $z$ à \textbf{circunferência unitária}
+$|z| = 1$, o fator de ponderação desaparece e obtém-se
 \begin{equation}
     \boxed{\;X(e^{j\omega}) = X(z)\Big|_{z\,=\,e^{j\omega}}\;}
     \label{eq:ligacao}
@@ -435,7 +436,7 @@ Desse resultado decorrem duas consequências importantes:
 região de convergência (RDC) da transformada~$z$ \emph{contiver} a circunferência
 unitária. Para um sistema causal com polos $p_i$, a RDC é $|z| > \max|p_i|$; logo, a
 resposta em frequência existe se todos os polos estiverem no interior da circunferência
-unitária --- exatamente a condição de estabilidade BIBO \cite{oppenheim2013}.
+unitária, exatamente a condição de estabilidade BIBO \cite{oppenheim2013}.
 
 \item \textbf{Interpretação geométrica.} Percorrer a circunferência unitária de
 $\omega = -\pi$ a $\omega = \pi$ equivale a dar uma volta completa no plano~$z$. Isso
@@ -681,15 +682,14 @@ $N$ componentes distintas; a segunda descreve sinais aperiódicos por meio de um
 periodicidade do espectro é uma marca do tempo discreto, sem contrapartida direta no
 tempo contínuo.
 
-As propriedades da TFTD --- em especial a da convolução e sua dual, a da multiplicação
---- mostraram-se o elo entre a teoria e a prática da filtragem digital. A ligação com a
+As propriedades da TFTD, em especial a da convolução e sua dual, a da multiplicação, mostraram-se o elo entre a teoria e a prática da filtragem digital. A ligação com a
 transformada~$z$ ficou estabelecida pela Equação~\eqref{eq:ligacao}: a TFTD é a
 transformada~$z$ avaliada sobre a circunferência unitária, o que fornece, como
 subproduto, o critério de existência da resposta em frequência e sua conexão direta com
 a estabilidade do sistema.
 
 Quanto à FFT, destacou-se que ela não é uma transformada distinta, mas um algoritmo que
-calcula a DFT com complexidade $O(N\log_2 N)$ em vez de $O(N^2)$ --- ganho superior a
+calcula a DFT com complexidade $O(N\log_2 N)$ em vez de $O(N^2)$, ganho superior a
 680 vezes já para $N = 4096$.
 
 Na parte computacional, obteve-se o espectro do pulso retangular proposto, chegando-se
