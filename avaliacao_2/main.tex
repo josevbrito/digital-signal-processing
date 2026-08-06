@@ -14,14 +14,16 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{newtxtext,newtxmath}
 \usepackage{amsmath, amssymb}
+\usepackage{newtxtext,newtxmath}
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{microtype}
 \usepackage{float}
 \usepackage[alf]{abntex2cite}   % citações ABNT NBR 10520 (sistema autor-data)
+
+\setlength{\emergencystretch}{2em}
 
 % ---------------------------------------------------------------------
 % Tamanho dos títulos: o padrão da classe (chapter=\Huge, section=\Large)
@@ -108,7 +110,7 @@ Python o cálculo do espectro da TFTD de um pulso retangular de largura parametr
 obtendo-se o núcleo de Dirichlet e verificando-se numericamente a relação inversa entre
 a duração do sinal no tempo e a largura do lóbulo principal em frequência. Os resultados
 numéricos foram validados por três caminhos independentes de cálculo, com concordância
-da ordem de $10^{-14}$.
+da ordem de $10^{-15}$.
 
 \textbf{Palavras-chave}: processamento digital de sinais; transformada de Fourier;
 tempo discreto; FFT; núcleo de Dirichlet.
@@ -261,7 +263,7 @@ $\angle X(e^{j\omega})$ é ímpar. Basta então representar $0 \le \omega \le \p
 
 \section{Comparação entre a SFTD e a TFTD}
 
-O Quadro~\ref{quad:comparacao} sintetiza as diferenças. Observa-se a dualidade
+A Tabela~\ref{quad:comparacao} sintetiza as diferenças. Observa-se a dualidade
 característica da análise de Fourier: \emph{periodicidade em um domínio corresponde a
 discretização no outro}.
 
@@ -381,7 +383,7 @@ precisar recalcular o somatório.
 
 \item \textbf{Convolução.} É a propriedade mais utilizada em processamento de sinais:
 a convolução no tempo, operação custosa, corresponde a uma \emph{multiplicação} no
-domínio da frequência. É o que fundamenta a filtragem digital, a saída de um sistema
+domínio da frequência. É o que fundamenta a filtragem digital: a saída de um sistema
 LIT é obtida multiplicando-se o espectro da entrada pela resposta em frequência do
 sistema \cite{lathi2007}.
 
@@ -476,7 +478,8 @@ experimentalmente na Figura~\ref{fig:dftamostra}, no Capítulo~\ref{cap:aplicaca
 
 A \textbf{Transformada Rápida de Fourier} (FFT, de \emph{Fast Fourier Transform}) não é
 uma transformada diferente: é um \emph{algoritmo eficiente} para calcular exatamente a
-mesma DFT da Equação~\eqref{eq:dft}. O resultado é idêntico ao do cálculo direto, apenas se obtém muito mais rápido.
+mesma DFT da Equação~\eqref{eq:dft}. O resultado é idêntico ao do cálculo direto, a
+diferença está apenas no tempo de execução.
 
 O cálculo direto da DFT exige, para cada um dos $N$ valores de $k$, um somatório de $N$
 termos, resultando em $N^2$ multiplicações complexas: complexidade $O(N^2)$. O algoritmo
@@ -694,7 +697,8 @@ calcula a DFT com complexidade $O(N\log_2 N)$ em vez de $O(N^2)$, ganho superior
 
 Na parte computacional, obteve-se o espectro do pulso retangular proposto, chegando-se
 analiticamente ao núcleo de Dirichlet e confirmando-se o resultado por três caminhos
-independentes, com erros da ordem de $10^{-14}$. A generalização da largura evidenciou a
+independentes, com erros da ordem de $10^{-15}$ para $M = 4$ e sempre inferiores a
+$10^{-12}$ nas demais larguras testadas. A generalização da largura evidenciou a
 relação inversa entre a duração no tempo e a ocupação em frequência, um dos princípios
 mais fundamentais da análise de sinais.
 
