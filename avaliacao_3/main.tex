@@ -1,9 +1,11 @@
-\documentclass[12pt,oneside,a4paper,chapter=TITLE,section=TITLE,english]{abntex2}
+\documentclass[12pt,oneside,a4paper,chapter=TITLE,section=TITLE,brazil]{abntex2}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{array}
+\newcolumntype{E}[1]{>{\raggedright\arraybackslash}p{#1}}
 \usepackage{microtype}
 \usepackage{float}
 \usepackage[alf]{abntex2cite}
@@ -67,9 +69,11 @@ componentes acima de \SI{50}{\hertz} de um sinal composto por senoides de 10, 12
 Butterworth analógico de terceira ordem. A transformação bilinear, com pré-distorção
 da frequência crítica, produz um IIR digital com corte exato em \SI{50}{\hertz}. Em
 seguida, projeta-se um FIR de ordem 40 pelo método da janela de Hamming. As respostas
-en frequência e ao impulso são apresentadas, os dois filtros são aplicados ao sinal e
-suas características são comparadas. O IIR alcança transição mais seletiva com poucos
-coeficientes, enquanto o FIR oferece estabilidade inerente e fase exatamente linear.
+em frequência e ao impulso são apresentadas, os dois filtros são aplicados ao sinal e
+suas características são comparadas. O IIR cumpre a especificação com pouquíssimos
+coeficientes e menor latência, enquanto o FIR, por usar ordem 40, alcança transição
+bem mais abrupta e maior atenuação na banda de rejeição, além de estabilidade inerente
+e fase exatamente linear.
 
 \textbf{Palavras-chave}: filtros digitais; Butterworth; transformação bilinear; filtro FIR; janela de Hamming.
 \end{resumo}
@@ -148,7 +152,7 @@ $-1$ e $-1/2\pm j\sqrt{3}/2$, portanto
 \begin{equation}
 H_N(s)=\frac{1}{(s+1)(s^2+s+1)}=\frac{1}{s^3+2s^2+2s+1}.
 \end{equation}
-Com $\Omega_c=2\pi(50)=\SI{314.1593}{\radian\per\second}$ e a transformação de escala
+Com $\Omega_c=2\pi(50)=\SI{314{,}1593}{\radian\per\second}$ e a transformação de escala
 $s\mapsto s/\Omega_c$, obtém-se
 \begin{equation}\label{eq:ha}
 H_a(s)=\frac{\Omega_c^3}{s^3+2\Omega_cs^2+2\Omega_c^2s+\Omega_c^3}.
@@ -194,10 +198,10 @@ estabilidade, mas deforma a frequência segundo
 \Omega=2F_s\tan\!\left(\pi\frac{f}{F_s}\right).
 \end{equation}
 Usar diretamente $\Omega_c=2\pi50$ deslocaria o corte digital para
-$f=(F_s/\pi)\arctan(\Omega_c/2F_s)=\SI{48.45}{\hertz}$. Portanto, para obter exatamente
+$f=(F_s/\pi)\arctan(\Omega_c/2F_s)=\SI{48{,}45}{\hertz}$. Portanto, para obter exatamente
 \SI{50}{\hertz}, aplica-se a pré-distorção
 \begin{equation}
-\Omega_p=2(500)\tan(\pi 50/500)=\SI{324.9197}{\radian\per\second}.
+\Omega_p=2(500)\tan(\pi 50/500)=\SI{324{,}9197}{\radian\per\second}.
 \end{equation}
 Substituindo $\Omega_p$ na Equação~\eqref{eq:ha} e depois a
 Equação~\eqref{eq:bilinear}, chega-se a
@@ -307,13 +311,31 @@ deixou de atenuar as frequências indesejadas.
 \chapter{Questão 6 - Comparação objetiva}
 \section{Item (a): vantagens e desvantagens}
 \begin{table}[H]\centering
-\caption{Comparação entre as estruturas projetadas}
-\begin{tabular}{@{}p{2.4cm}p{5.4cm}p{5.4cm}@{}}\toprule
+\caption{Comparação entre as estruturas projetadas}\label{tab:comparacao}
+\small
+\begin{tabular}{@{}E{2.6cm}E{5.2cm}E{5.2cm}@{}}\toprule
 &\textbf{IIR Butterworth}&\textbf{FIR Hamming}\\\midrule
-Vantagens&Transição seletiva com ordem baixa; apenas quatro coeficientes no numerador e quatro no denominador; menor custo e memória.&Estabilidade inerente; fase exatamente linear; ausência de realimentação; menor sensibilidade à quantização.\\
-Desvantagens&Fase não linear; realimentação e maior sensibilidade numérica; pode tornar-se instável com projeto ou quantização inadequados.&41 multiplicações por amostra; maior memória; atraso fixo de 20 amostras; transição mais larga para a ordem escolhida.\\\bottomrule
+Vantagens&Atende à especificação com ordem muito baixa: apenas quatro coeficientes no numerador e três no denominador; menor custo, memória e latência.&Estabilidade inerente; fase exatamente linear; ausência de realimentação; menor sensibilidade à quantização; transição mais abrupta e maior atenuação na banda de rejeição.\\
+Desvantagens&Fase não linear; realimentação e maior sensibilidade numérica; pode tornar-se instável com projeto ou quantização inadequados; transição mais larga para a ordem escolhida.&41 multiplicações por amostra; maior memória; atraso fixo de 20 amostras; exige ordem muito mais alta que o IIR para a mesma tarefa.\\\bottomrule
 \end{tabular}
+\fonte{Elaborado pelos autores.}
 \end{table}
+
+A Figura~\ref{fig:comparacao-freq} sobrepõe as duas respostas em frequência e torna a
+comparação concreta. Na banda passante ambos preservam a componente de
+\SI{10}{\hertz}. A diferença decisiva está na transição: medindo a faixa entre $-3$ e
+$-40$ dB, o IIR precisa de \SI{106{,}9}{\hertz} enquanto o FIR precisa de apenas
+\SI{23{,}6}{\hertz}, ou seja, o FIR de ordem 40 é cerca de 4,5 vezes mais seletivo que
+o IIR de ordem 3. Isso se reflete na atenuação das componentes indesejadas: em
+\SI{120}{\hertz} o IIR entrega $-27{,}7$ dB contra $-73{,}5$ dB do FIR. Em
+contrapartida, o FIR exibe as ondulações características do método da janela na banda
+de rejeição e usa 41 coeficientes, contra os sete do IIR. Fica claro, portanto, que a
+vantagem do IIR não é a seletividade, e sim obter um filtro utilizável com um custo
+computacional muito menor.
+\begin{figure}[H]\centering
+\includegraphics[width=.86\textwidth]{images/respostas_frequencia.png}
+\caption{Respostas em frequência dos dois filtros sobrepostas.}\label{fig:comparacao-freq}
+\end{figure}
 
 \section{Item (b): indicação para tempo real}
 Para uma aplicação em tempo real com recursos computacionais limitados e sem exigência
@@ -328,8 +350,12 @@ Os seis itens do projeto foram atendidos. O sinal foi corretamente amostrado sem
 aliasing; o Butterworth analógico de ordem 3 foi deduzido e convertido em um IIR
 estável com corte digital corrigido por pré-distorção; e o FIR de ordem 40 foi obtido
 pela janela de Hamming. As simulações confirmaram a forte atenuação das componentes acima de
-\SI{50}{\hertz}. A comparação evidencia o compromisso fundamental: eficiência e baixa
-latência no IIR contra fase linear e robustez no FIR.
+\SI{50}{\hertz}. A comparação evidencia o compromisso fundamental: de um lado, o IIR
+resolve o problema com sete coeficientes e latência mínima; de outro, o FIR, ao custo
+de 41 coeficientes e 20 amostras de atraso, entrega fase linear, estabilidade garantida
+e uma transição cerca de 4,5 vezes mais estreita. A escolha depende, portanto, de qual
+recurso é mais escasso na aplicação: tempo de processamento ou fidelidade da forma de
+onda.
 
 \postextual
 \bibliography{referencias}

@@ -1,7 +1,7 @@
-# 3ª Avaliação — Processamento Digital de Sinais
+# 3ª Avaliação - Processamento Digital de Sinais
 
-**Disciplina:** EECP0018 — Processamento Digital de Sinais  
-**Curso:** Engenharia da Computação — UFMA  
+**Disciplina:** EECP0018 - Processamento Digital de Sinais  
+**Curso:** Engenharia da Computação - UFMA  
 **Professor:** Dr. Pedro Baptista Fernandes
 
 **Integrantes:** Ana Iara Loayza Costa, José Victor Brito Costa e Milena Freire Britto Neves.
@@ -22,7 +22,7 @@
 - Analógico: Butterworth passa-baixas de ordem 3 e corte em 50 Hz.
 - IIR: transformação bilinear com pré-distorção, corte digital exato em 50 Hz.
 - FIR: ordem 40, 41 coeficientes, janela de Hamming e atraso de 20 amostras.
-- Ambos removem as componentes acima de 50 Hz; o IIR requer menos operações e o FIR tem fase linear.
+- Ambos atenuam fortemente as componentes acima de 50 Hz; o IIR requer menos operações e o FIR tem fase linear.
 
 ## Execução
 
