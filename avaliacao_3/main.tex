@@ -61,15 +61,15 @@
 \imprimirfolhaderosto
 
 \begin{resumo}
-Este trabalho projeta dois filtros digitais passa-baixas para remover componentes acima
-de \SI{50}{\hertz} de um sinal composto por senoides de 10, 120 e \SI{200}{\hertz},
-amostrado a \SI{500}{\hertz}. Primeiramente, projeta-se um Butterworth analógico de
-terceira ordem. A transformação bilinear, com pré-distorção da frequência crítica,
-produz um IIR digital com corte exato em \SI{50}{\hertz}. Em seguida, projeta-se um FIR
-de ordem 40 pelo método da janela de Hamming. As respostas em frequência e ao impulso
-são apresentadas, os dois filtros são aplicados ao sinal e suas características são
-comparadas. O IIR alcança transição mais seletiva com poucos coeficientes, enquanto o
-FIR oferece estabilidade inerente e fase exatamente linear.
+Este trabalho projeta dois filtros digitais passa-baixas para atenuar fortemente as
+componentes acima de \SI{50}{\hertz} de um sinal composto por senoides de 10, 120 e
+\SI{200}{\hertz}, amostrado a \SI{500}{\hertz}. Primeiramente, projeta-se um
+Butterworth analógico de terceira ordem. A transformação bilinear, com pré-distorção
+da frequência crítica, produz um IIR digital com corte exato em \SI{50}{\hertz}. Em
+seguida, projeta-se um FIR de ordem 40 pelo método da janela de Hamming. As respostas
+en frequência e ao impulso são apresentadas, os dois filtros são aplicados ao sinal e
+suas características são comparadas. O IIR alcança transição mais seletiva com poucos
+coeficientes, enquanto o FIR oferece estabilidade inerente e fase exatamente linear.
 
 \textbf{Palavras-chave}: filtros digitais; Butterworth; transformação bilinear; filtro FIR; janela de Hamming.
 \end{resumo}
@@ -141,8 +141,9 @@ isso não significa perda por aliasing, apenas uma representação visual menos 
 
 \chapter{Questão 2 - Filtro Butterworth analógico}
 \section{Item (a): função de transferência}
-Deseja-se preservar a componente de \SI{10}{\hertz} e atenuar as componentes acima de
-\SI{50}{\hertz}. O protótipo Butterworth normalizado de ordem 3 tem polos em
+Deseja-se preservar em magnitude a componente de \SI{10}{\hertz} e atenuar
+fortemente as componentes acima de \SI{50}{\hertz}. O protótipo Butterworth
+normalizado de ordem 3 tem polos em
 $-1$ e $-1/2\pm j\sqrt{3}/2$, portanto
 \begin{equation}
 H_N(s)=\frac{1}{(s+1)(s^2+s+1)}=\frac{1}{s^3+2s^2+2s+1}.
@@ -182,7 +183,7 @@ de forma ideal e instantânea.
 \chapter{Questão 3 - Filtro digital IIR por transformação bilinear}
 \section{Item (a): especificações do filtro}
 As especificações são: passa-baixas Butterworth, ordem 3, $F_s=\SI{500}{\hertz}$,
-$f_c=\SI{50}{\hertz}$ e ganho unitário em corrente contínua. A transformação bilinear
+$f_c=\SI{50}{\hertz}$ e ganho unitário em frequência zero. A transformação bilinear
 é
 \begin{equation}\label{eq:bilinear}
 s=2F_s\frac{1-z^{-1}}{1+z^{-1}}.
@@ -212,8 +213,9 @@ A resposta em frequência é obtida avaliando a Equação~\eqref{eq:iir} em
 $z=e^{j2\pi f/F_s}$. A Figura~\ref{fig:freq-iir} apresenta o resultado. O IIR
 tem aproximadamente $0$ dB em \SI{10}{\hertz}, $-3{,}01$ dB
 em \SI{50}{\hertz}, $-27{,}7$ dB em \SI{120}{\hertz} e $-58{,}6$ dB em
-\SI{200}{\hertz}. Portanto, a componente desejada é preservada, enquanto as duas
-componentes acima do corte são reduzidas a pequenas parcelas de suas amplitudes.
+\SI{200}{\hertz}. Portanto, a componente de \SI{10}{\hertz} é preservada em magnitude e
+passa pela banda de passagem, enquanto as duas componentes acima do corte são
+atenuadas fortemente.
 \begin{figure}[H]\centering
 \includegraphics[width=.86\textwidth]{images/resposta_frequencia_iir.png}
 \caption{Resposta em frequência do filtro IIR da Questão 3.}\label{fig:freq-iir}
@@ -293,13 +295,14 @@ a comparação da forma e do atraso dos sinais.
 
 \noindent\textbf{Interpretação do resultado.} O sinal cinza apresenta oscilações
 rápidas, enquanto as duas saídas se aproximam de uma senoide limpa de
-\SI{10}{\hertz}. Isso confirma visualmente que 120 e \SI{200}{\hertz} foram rejeitadas.
-No início há um transitório porque os filtros partem de condições iniciais nulas e
-precisam acumular amostras. A saída FIR começa mais atrasada e permanece deslocada em
-20 amostras devido à fase linear. O IIR reage mais rapidamente, mas seu atraso depende
-da frequência e sua fase não é linear. As amplitudes das saídas não são idênticas nos
-primeiros instantes por causa desses transitórios e das diferentes respostas de fase;
-isso não significa que um dos filtros deixou de remover as frequências indesejadas.
+\SI{10}{\hertz}. Isso confirma visualmente que 120 e \SI{200}{\hertz} foram
+atenuadas fortemente. No início há um transitório porque os filtros partem de
+condições iniciais nulas e precisam acumular amostras. A saída FIR aparece atrasada em
+20 amostras devido ao atraso de grupo introduzido pela fase linear, enquanto o IIR reage
+mais rapidamente, embora seu atraso dependa da frequência e sua fase não seja linear.
+As amplitudes das saídas não são idênticas nos primeiros instantes por causa desses
+transitórios e das diferentes respostas de fase; isso não significa que um dos filtros
+deixou de atenuar as frequências indesejadas.
 
 \chapter{Questão 6 - Comparação objetiva}
 \section{Item (a): vantagens e desvantagens}
@@ -324,7 +327,7 @@ determina sozinho a família; neste problema, a solução IIR é a escolha mais 
 Os seis itens do projeto foram atendidos. O sinal foi corretamente amostrado sem
 aliasing; o Butterworth analógico de ordem 3 foi deduzido e convertido em um IIR
 estável com corte digital corrigido por pré-distorção; e o FIR de ordem 40 foi obtido
-pela janela de Hamming. As simulações confirmaram a remoção das componentes acima de
+pela janela de Hamming. As simulações confirmaram a forte atenuação das componentes acima de
 \SI{50}{\hertz}. A comparação evidencia o compromisso fundamental: eficiência e baixa
 latência no IIR contra fase linear e robustez no FIR.
 
