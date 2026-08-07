@@ -27,9 +27,9 @@
 \autor{Ana Iara Loayza Costa\\José Victor Brito Costa\\Milena Freire Britto Neves}
 \local{São Luís}
 \data{2026}
-\instituicao{Universidade Federal do Maranhão --- UFMA\\Centro de Ciências Exatas e Tecnologia\\Curso de Engenharia da Computação}
+\instituicao{Universidade Federal do Maranhão - UFMA\\Centro de Ciências Exatas e Tecnologia\\Curso de Engenharia da Computação}
 \tipotrabalho{Trabalho acadêmico}
-\preambulo{Trabalho referente à 3ª Avaliação da disciplina EECP0018 --- Processamento Digital de Sinais, sob orientação do Prof. Dr. Pedro Baptista Fernandes.}
+\preambulo{Trabalho referente à 3ª Avaliação da disciplina EECP0018 - Processamento Digital de Sinais, sob orientação do Prof. Dr. Pedro Baptista Fernandes.}
 
 \begin{document}
 \frenchspacing
@@ -59,7 +59,8 @@ FIR oferece estabilidade inerente e fase exatamente linear.
 
 \newpage
 
-\chapter{Introdução}
+\chapter*{Introdução}
+\addcontentsline{toc}{chapter}{Introdução}
 Filtros digitais permitem selecionar componentes espectrais por meio de algoritmos
 executados sobre amostras. Neste trabalho são consideradas as duas famílias principais:
 filtros com resposta ao impulso infinita (IIR) e filtros com resposta ao impulso finita
@@ -69,7 +70,8 @@ bilinear; o segundo, pelo truncamento de uma resposta ideal com uma janela de Ha
 Python, e todas as rotinas completas acompanham o relatório no notebook
 \texttt{PDS\_ATV3.ipynb}.
 
-\chapter{Geração e amostragem do sinal}
+\chapter{Questão 1 - Geração e amostragem do sinal}
+\section{Itens (a) e (b): geração e amostragem}
 O sinal pedido é
 \begin{equation}
 x(t)=\sin(20\pi t)+0{,}6\sin(240\pi t)+0{,}3\sin(400\pi t).
@@ -86,15 +88,38 @@ observação produz 500 amostras, nos instantes $t_n=n/500$, $0\leq n\leq499$. L
 x[n]=\sin(0{,}04\pi n)+0{,}6\sin(0{,}48\pi n)+0{,}3\sin(0{,}8\pi n).
 \end{equation}
 Como $F_s/2=\SI{250}{\hertz}>f_{\max}=\SI{200}{\hertz}$, não ocorre sobreposição
-espectral por subamostragem \cite{haykin2001}. A Figura~\ref{fig:sinal} sobrepõe a
-curva contínua e as amostras.
+espectral por subamostragem \cite{haykin2001}.
+
+\section{Item (c): sinal contínuo e sinal amostrado}
+Antes da sobreposição, as Figuras~\ref{fig:continuo} e~\ref{fig:discreto} apresentam
+separadamente o sinal contínuo e sua sequência amostrada. Na representação discreta,
+cada haste corresponde a uma amostra: não se pressupõem valores entre dois instantes
+consecutivos.
+\begin{figure}[H]\centering
+\includegraphics[width=.92\textwidth]{images/sinal_continuo.png}
+\caption{Sinal contínuo $x(t)$ durante um segundo.}\label{fig:continuo}
+\end{figure}
+\begin{figure}[H]\centering
+\includegraphics[width=.92\textwidth]{images/sinal_amostrado_stem.png}
+\caption{Sinal discreto $x[n]$ com 500 amostras, representado por hastes.}\label{fig:discreto}
+\end{figure}
+A Figura~\ref{fig:sinal} reúne as duas representações para permitir a comparação direta.
 \begin{figure}[H]\centering
 \includegraphics[width=\textwidth]{images/sinal_continuo_amostrado.png}
 \caption{Sinal contínuo durante um segundo e sinal amostrado a \SI{500}{\hertz}.}\label{fig:sinal}
 \end{figure}
 
-\chapter{Filtro Butterworth analógico}
-\section{Função de transferência}
+\noindent\textbf{Interpretação do resultado.} A oscilação lenta que determina a forma
+geral do sinal vem da componente de \SI{10}{\hertz}; as ondulações rápidas sobre essa
+forma são causadas pelas componentes de 120 e \SI{200}{\hertz}. Os pontos amostrados
+acompanham a curva contínua porque há 500 amostras por segundo e a maior frequência
+presente é menor que \SI{250}{\hertz}. Isso implica que o sinal pode ser representado
+digitalmente sem aliasing. Entretanto, a componente de \SI{200}{\hertz} tem somente
+2,5 amostras por ciclo e, por isso, sua forma isolada pareceria pouco suave no gráfico;
+isso não significa perda por aliasing, apenas uma representação visual menos densa.
+
+\chapter{Questão 2 - Filtro Butterworth analógico}
+\section{Item (a): função de transferência}
 Deseja-se preservar a componente de \SI{10}{\hertz} e atenuar as componentes acima de
 \SI{50}{\hertz}. O protótipo Butterworth normalizado de ordem 3 tem polos em
 $-1$ e $-1/2\pm j\sqrt{3}/2$, portanto
@@ -116,7 +141,7 @@ O Butterworth é maximamente plano na banda passante e satisfaz
 \end{equation}
 Assim, em $\Omega=\Omega_c$, $|H_a|=1/\sqrt2$ ou $-3{,}0103$ dB.
 
-\section{Diagrama de Bode}
+\section{Item (b): diagrama de Bode de magnitude}
 A Figura~\ref{fig:bode} identifica o corte. Após a região de transição, a ordem 3
 resulta em inclinação assintótica de $-60$ dB/década.
 \begin{figure}[H]\centering
@@ -124,8 +149,17 @@ resulta em inclinação assintótica de $-60$ dB/década.
 \caption{Diagrama de Bode de magnitude do Butterworth analógico.}\label{fig:bode}
 \end{figure}
 
-\chapter{Filtro digital IIR por transformação bilinear}
-\section{Especificações e dedução}
+\noindent\textbf{Interpretação do resultado.} A curva é praticamente horizontal nas
+baixas frequências, característica do Butterworth maximamente plano. Isso é desejável
+porque a componente útil de \SI{10}{\hertz} atravessa o filtro quase sem alteração de
+amplitude. Em \SI{50}{\hertz}, o ganho vale $-3{,}01$ dB: essa é a fronteira entre as
+bandas, e não uma remoção completa. Acima do corte, a queda se torna progressivamente
+mais acentuada; por ser de terceira ordem, o filtro tende a $-60$ dB/década. Assim, as
+componentes de 120 e \SI{200}{\hertz} ficam fortemente atenuadas, mas não são anuladas
+de forma ideal e instantânea.
+
+\chapter{Questão 3 - Filtro digital IIR por transformação bilinear}
+\section{Item (a): especificações do filtro}
 As especificações são: passa-baixas Butterworth, ordem 3, $F_s=\SI{500}{\hertz}$,
 $f_c=\SI{50}{\hertz}$ e ganho unitário em corrente contínua. A transformação bilinear
 é
@@ -152,14 +186,31 @@ H_{IIR}(z)=\frac{0{,}01809893+0{,}05429680z^{-1}+0{,}05429680z^{-2}+0{,}01809893
 Os polos têm módulos menores que 1 (o maior é aproximadamente $0{,}739$), logo o
 filtro causal é BIBO-estável.
 
-\section{Respostas em frequência e ao impulso}
+\section{Item (b): resposta em frequência}
 A resposta em frequência é obtida avaliando a Equação~\eqref{eq:iir} em
-$z=e^{j2\pi f/F_s}$. Ela aparece na Figura~\ref{fig:freq}, junto ao FIR para facilitar
-a comparação. A resposta ao impulso da Figura~\ref{fig:impulso} é infinita, embora
-decresça por causa da estabilidade dos polos.
+$z=e^{j2\pi f/F_s}$. A Figura~\ref{fig:freq-iir} apresenta o resultado. O IIR
+tem aproximadamente $0$ dB em \SI{10}{\hertz}, $-3{,}01$ dB
+em \SI{50}{\hertz}, $-27{,}7$ dB em \SI{120}{\hertz} e $-58{,}6$ dB em
+\SI{200}{\hertz}. Portanto, a componente desejada é preservada, enquanto as duas
+componentes acima do corte são reduzidas a pequenas parcelas de suas amplitudes.
+\begin{figure}[H]\centering
+\includegraphics[width=.86\textwidth]{images/resposta_frequencia_iir.png}
+\caption{Resposta em frequência do filtro IIR da Questão 3.}\label{fig:freq-iir}
+\end{figure}
 
-\chapter{Filtro FIR por janela de Hamming}
-\section{Especificações e coeficientes}
+\section{Item (c): resposta ao impulso}
+A resposta ao impulso da Figura~\ref{fig:impulso-iir} é infinita, porque a saída anterior
+é realimentada na entrada do cálculo. Apesar disso, ela decresce rapidamente: como o
+maior módulo dos polos é $0{,}739<1$, cada oscilação sucessiva perde amplitude. Isso
+implica estabilidade e mostra que o efeito de uma amostra isolada desaparece com o
+tempo, mesmo que teoricamente nunca se torne exatamente nulo.
+\begin{figure}[H]\centering
+\includegraphics[width=.82\textwidth]{images/resposta_impulso_iir.png}
+\caption{Resposta ao impulso do filtro IIR da Questão 3.}\label{fig:impulso-iir}
+\end{figure}
+
+\chapter{Questão 4 - Filtro FIR por janela de Hamming}
+\section{Item (a): especificações do filtro}
 O segundo projeto é passa-baixas, $F_s=\SI{500}{\hertz}$, $f_c=\SI{50}{\hertz}$,
 ordem $N=40$ (41 coeficientes), janela de Hamming e fase linear. A frequência digital
 é $\omega_c=2\pi f_c/F_s=0{,}2\pi$. Centralizando a resposta ideal em $N/2=20$,
@@ -175,32 +226,62 @@ e os coeficientes finais são $h[n]=h_d[n]w[n]$, normalizados por
 $\sum_{n=0}^{40}h[n]$ para tornar $H(1)=1$. Como $h[n]=h[40-n]$, a fase é linear e o
 atraso de grupo é exatamente $N/2=20$ amostras, ou \SI{40}{\milli\second}.
 
-\section{Respostas}
+\section{Item (b): resposta em frequência}
 \begin{figure}[H]\centering
-\includegraphics[width=.9\textwidth]{images/respostas_frequencia.png}
-\caption{Respostas em frequência dos filtros digitais e corte especificado.}\label{fig:freq}
-\end{figure}
-\begin{figure}[H]\centering
-\includegraphics[width=.88\textwidth]{images/respostas_impulso.png}
-\caption{Respostas ao impulso: IIR infinita e FIR com 41 amostras.}\label{fig:impulso}
+\includegraphics[width=.86\textwidth]{images/resposta_frequencia_fir.png}
+\caption{Resposta em frequência do filtro FIR da Questão 4.}\label{fig:freq-fir}
 \end{figure}
 
-\chapter{Aplicação dos filtros ao sinal}
+\noindent\textbf{Interpretação do resultado.} No FIR, a frequência inserida na fórmula
+da resposta ideal marca o centro da transição; por isso o ganho observado em
+\SI{50}{\hertz} fica próximo de $-6$ dB, e não de $-3$ dB como no Butterworth. Isso é
+esperado no método da janela e não indica erro no projeto. A janela de Hamming suaviza
+o truncamento e reduz as ondulações laterais, ao custo de alargar a faixa de transição.
+Nas frequências do ruído, o ganho é aproximadamente $-73{,}5$ dB em \SI{120}{\hertz}
+e $-67{,}2$ dB em \SI{200}{\hertz}, indicando forte rejeição.
+
+\section{Item (c): resposta ao impulso}
+\begin{figure}[H]\centering
+\includegraphics[width=.82\textwidth]{images/resposta_impulso_fir.png}
+\caption{Resposta ao impulso do filtro FIR da Questão 4.}\label{fig:impulso-fir}
+\end{figure}
+
+No FIR, a resposta contém exatamente 41 amostras e depois se torna zero. Sua simetria
+em torno de $n=20$ produz fase linear: todas as componentes preservadas sofrem o mesmo
+atraso de 20 amostras, equivalente a \SI{40}{\milli\second}. A forma do sinal é então
+preservada na banda passante, mas aparece deslocada no tempo.
+
+\chapter{Questão 5 - Aplicação dos filtros ao sinal}
 Para ambos os filtros, a saída foi calculada diretamente pela equação de diferenças
 \begin{equation}
 y[n]=\sum_{k=0}^{M}b_kx[n-k]-\sum_{k=1}^{N}a_ky[n-k],\qquad a_0=1.
 \end{equation}
-No FIR, $a_k=0$ para $k>0$. A Figura~\ref{fig:saidas} mantém os sinais na escala de
-tempo causal: o deslocamento visível do FIR corresponde ao seu atraso de grupo de
-20 amostras. Após os transitórios, ambos preservam essencialmente a senoide de
-\SI{10}{\hertz} e rejeitam as oscilações de 120 e \SI{200}{\hertz}.
+No FIR, $a_k=0$ para $k>0$.
 \begin{figure}[H]\centering
 \includegraphics[width=\textwidth]{images/comparacao_saidas.png}
-\caption{Sinal amostrado e saídas causais dos filtros IIR e FIR.}\label{fig:saidas}
+\caption{Sinal original amostrado em hastes e saídas digitais dos filtros IIR e FIR,
+com visão completa e ampliação do intervalo de 0,20 a 0,40 s.}\label{fig:saidas}
 \end{figure}
 
-\chapter{Comparação objetiva}
-\section{Vantagens e desvantagens}
+\noindent\textbf{Forma de representação.} O sinal original é mostrado por hastes para
+deixar explícito que se trata da sequência discreta $x[n]$. As saídas também são
+sequências discretas; seus marcadores identificam as amostras e as linhas apenas as
+conectam como guia visual. O painel inferior amplia 0,20 a 0,40 s, após o transitório
+inicial, porque no intervalo completo as 500 amostras ficam muito próximas e dificultam
+a comparação da forma e do atraso dos sinais.
+
+\noindent\textbf{Interpretação do resultado.} O sinal cinza apresenta oscilações
+rápidas, enquanto as duas saídas se aproximam de uma senoide limpa de
+\SI{10}{\hertz}. Isso confirma visualmente que 120 e \SI{200}{\hertz} foram rejeitadas.
+No início há um transitório porque os filtros partem de condições iniciais nulas e
+precisam acumular amostras. A saída FIR começa mais atrasada e permanece deslocada em
+20 amostras devido à fase linear. O IIR reage mais rapidamente, mas seu atraso depende
+da frequência e sua fase não é linear. As amplitudes das saídas não são idênticas nos
+primeiros instantes por causa desses transitórios e das diferentes respostas de fase;
+isso não significa que um dos filtros deixou de remover as frequências indesejadas.
+
+\chapter{Questão 6 - Comparação objetiva}
+\section{Item (a): vantagens e desvantagens}
 \begin{table}[H]\centering
 \caption{Comparação entre as estruturas projetadas}
 \begin{tabular}{@{}p{2.4cm}p{5.4cm}p{5.4cm}@{}}\toprule
@@ -210,7 +291,7 @@ Desvantagens&Fase não linear; realimentação e maior sensibilidade numérica; 
 \end{tabular}
 \end{table}
 
-\section{Indicação para tempo real}
+\section{Item (b): indicação para tempo real}
 Para uma aplicação em tempo real com recursos computacionais limitados e sem exigência
 de fase linear, o \textbf{IIR de terceira ordem é o mais indicado}: cumpre a filtragem
 com muito menos operações e menor latência. Se a forma de onda ou o alinhamento
